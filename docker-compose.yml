@@ -1,0 +1,15 @@
+services:
+  evaluator:
+    build: ./evaluator
+    ports: ["8081:8081"]
+  backend:
+    build: ./backend
+    ports: ["8000:8000"]
+    environment:
+      EVALUATOR_URL: http://evaluator:8081
+    volumes:
+      - ./frontend:/app/frontend:ro
+      - gamedata:/data
+    depends_on: [evaluator]
+volumes:
+  gamedata:

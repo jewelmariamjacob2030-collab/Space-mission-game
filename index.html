@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Space Mission Design Game</title>
+<style>
+:root{--bg:#f4f6fb;--card:#fff;--tx:#14192b;--mu:#5b6482;--ac:#3b5bdb;--ok:#2b9348;--bad:#d62839;--bd:#d5daea;--on:#e7ecff;color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0b1020;--card:#151c33;--tx:#e8ecfa;--mu:#9aa5c8;--ac:#7c9bff;--ok:#4cc26b;--bad:#ff6b7a;--bd:#2a3558;--on:#1f2b55;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0b1020;--card:#151c33;--tx:#e8ecfa;--mu:#9aa5c8;--ac:#7c9bff;--ok:#4cc26b;--bad:#ff6b7a;--bd:#2a3558;--on:#1f2b55;color-scheme:dark}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--tx);font:16px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif}
+main{max-width:860px;margin:0 auto;padding:16px}
+h1{margin:.2em 0;font-size:1.7rem}h2{font-size:1.1rem;margin:0 0 4px}p{margin:.3em 0}
+.sub{color:var(--mu)}
+section,.box{background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:14px;margin:12px 0}
+.why{color:var(--mu);font-size:.88rem;margin:2px 0 10px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:8px}
+.card{text-align:left;background:var(--bg);color:var(--tx);border:2px solid var(--bd);border-radius:10px;padding:9px;cursor:pointer;font:inherit}
+.card.on{border-color:var(--ac);background:var(--on)}.card small{display:block;color:var(--mu);font-size:.8rem}
+.tag{font-size:.72rem;background:var(--on);color:var(--ac);border-radius:99px;padding:2px 8px;margin-left:6px;vertical-align:middle}
+.row{display:flex;flex-wrap:wrap;gap:12px;align-items:center}
+select,input{font:inherit;background:var(--bg);color:var(--tx);border:1px solid var(--bd);border-radius:8px;padding:6px 8px}
+.m{margin:8px 0}.m div.l{display:flex;justify-content:space-between;font-size:.85rem}
+.bar{height:10px;background:var(--bd);border-radius:9px;overflow:hidden}.bar i{display:block;height:100%;background:var(--ok)}.bar.x i{background:var(--bad)}
+button.go{background:var(--ac);color:#fff;border:0;border-radius:10px;padding:12px 22px;font:700 1rem inherit;cursor:pointer;width:100%}
+button.sm{background:var(--bg);color:var(--tx);border:1px solid var(--bd);border-radius:8px;padding:6px 10px;font:inherit;cursor:pointer}
+.res li{margin:5px 0;list-style:none}.res ul{padding:0}.g{color:var(--ok)}.b{color:var(--bad)}
+.big{font-size:1.5rem;font-weight:800}
+.tw{overflow-x:auto}table{border-collapse:collapse;width:100%;font-size:.88rem}td,th{padding:5px 8px;border-bottom:1px solid var(--bd);text-align:left;white-space:nowrap}
+#ov:empty{display:none}#ov{position:fixed;inset:0;background:rgba(5,8,20,.94);z-index:9;display:flex;align-items:center;justify-content:center;padding:env(safe-area-inset-top,0px) 0 env(safe-area-inset-bottom,0px)}.ovb{width:min(92vw,360px);color:#e8ecfa;text-align:center}#cv{width:100%;max-height:68vh;aspect-ratio:2/3;background:#050814;border-radius:12px;touch-action:none;border:1px solid #2a3558}.hud{font:700 .9rem system-ui;display:flex;justify-content:space-between;margin:4px 2px}.ovb .why{color:#9aa5c8}#vw{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;max-width:860px;height:210px;margin:8px auto 0;border-radius:14px;overflow:hidden;background:radial-gradient(#1a2347,#050814);border:1px solid var(--bd)}#c3{width:100%;height:100%;display:block;touch-action:pan-y;cursor:grab}#vl{position:absolute;left:10px;right:10px;bottom:6px;font-size:.72rem;color:#c9d3f5;text-shadow:0 1px 3px #000;pointer-events:none}.gt{background:linear-gradient(90deg,var(--ac),#ff8a5c);-webkit-background-clip:text;background-clip:text;color:transparent}.hudb{display:flex;gap:12px;align-items:center;background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:10px 14px;margin:8px 0}.lv{font-weight:800;font-size:1.2rem;line-height:1.1}.lv small{display:block;font-size:.7rem;color:var(--mu);font-weight:600}.xp{flex:1}.xp small{color:var(--mu);font-size:.75rem}.cr{font-weight:800}.tabs{display:flex;gap:6px;margin:8px 0}.tabs button{flex:1;background:var(--card);color:var(--tx);border:1px solid var(--bd);border-radius:10px;padding:9px;font:600 .9rem system-ui;cursor:pointer}.tabs button.on{background:var(--ac);color:#fff;border-color:var(--ac)}.toast{background:var(--on);border:1px solid var(--ac);border-radius:10px;padding:8px 12px;margin:8px 0;font-weight:600}section{box-shadow:0 2px 10px rgba(0,0,0,.06)}.card{transition:transform .12s}.card:hover{transform:translateY(-2px)}.track{position:relative;height:34px;background:#222b4d;border-radius:8px;margin:14px 0}.zone{position:absolute;top:0;bottom:0;background:#2b9348aa;border-radius:6px}.mark{position:absolute;top:2px;bottom:2px;width:4%;background:#fff;border-radius:5px}.pad{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:12px 0}.pad button{height:90px;border:0;border-radius:14px;cursor:pointer;transition:opacity .15s}</style></head><body><div id="vw"><canvas id="c3"></canvas><div id="vl"></div></div><main id="app"></main><div id="ov"></div><script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+const D={
+scn:[{n:"Lunar Ice Hunter",d:"Map water ice near the Moon’s south pole.",b:650,m:900,s:1,r:1,g:8,w:"Moon: close to Earth and full sunlight."},
+{n:"Mars Climate Orbiter",d:"Study Mars’s weather and dust storms.",b:800,m:1000,s:.43,r:2,g:10,w:"Mars: sunlight is only ~43% as strong, and signals travel farther."},
+{n:"Europa Ocean Scout",d:"Search for signs of a hidden ocean on Jupiter’s moon.",b:1000,m:1100,s:.04,r:3,g:12,w:"Europa: almost no sunlight (~4%), and a long way from Earth."}],
+pw:[{n:"Small solar array",w:200,k:0,m:60,c:40},{n:"Large solar array",w:600,k:0,m:150,c:90},{n:"RTG (nuclear battery)",w:300,k:1,m:90,c:160}],
+cm:[{n:"Low-gain antenna",r:1,p:20,m:10,c:20},{n:"Medium-gain antenna",r:4,p:60,m:40,c:60},{n:"High-gain dish",r:12,p:120,m:90,c:120}],
+pl:[{n:"Camera",s:3,p:40,d:3,m:30,c:50},{n:"Spectrometer",s:4,p:80,d:2,m:50,c:80},{n:"Radar sounder",s:6,p:150,d:5,m:120,c:150},{n:"Magnetometer",s:2,p:20,d:1,m:10,c:25}],
+ob:[{n:"Low orbit",x:1.3,m:150,c:80},{n:"High orbit",x:1,m:80,c:50},{n:"Flyby",x:.6,m:40,c:30}],
+ev:[{id:"none",n:"Quiet space weather",t:"Nothing unexpected happened."},
+{id:"flare",n:"Solar flare",t:"A solar storm cut solar power by 25%. RTGs are not affected."},
+{id:"meteor",n:"Micro-meteoroid hit",t:"Debris damaged an instrument (-20% science) unless you kept 10%+ spare mass for shielding."},
+{id:"glitch",n:"Antenna glitch",t:"Data rate dropped 30% unless you flew the high-gain dish."},
+{id:"cut",n:"Budget cut",t:"Your budget was cut by 10% mid-development."}]};
+const ROLES=["Mission Lead","Power Engineer","Comms Engineer","Science Lead"];
+const sum=(a,k)=>a.reduce((t,x)=>t+x[k],0);
+const st={fund:0,tab:0,toast:'',mode:0,df:1,pn:1,sc:0,pw:1,cm:1,pl:[0],ob:1,mo:12,res:null,hist:[],msg:""};
+function calc(e){const sc=D.scn[st.sc],P=D.pw[st.pw],C=D.cm[st.cm],L=st.pl.map(i=>D.pl[i]),O=D.ob[st.ob];
+let bud=sc.b*[1.2,1,.85][st.df]+st.fund;if(e=="cut")bud*=.9;
+const mass=150+P.m+C.m+O.m+sum(L,"m"),cost=100+P.c+C.c+O.c+sum(L,"c")+st.mo*4;
+let gen=P.k?P.w:P.w*sc.s;if(e=="flare"&&!P.k)gen*=.75;
+const use=50+C.p+sum(L,"p"),need=sum(L,"d");let rate=C.r/sc.r;if(e=="glitch"&&C.r<12)rate*=.7;
+const ret=need?Math.min(1,rate/need):0;
+let sci=sum(L,"s")*O.x*Math.pow(st.mo/12,.8)*ret;if(e=="meteor"&&mass>sc.m*.9)sci*=.8;
+return{sc,bud,mass,cost,gen,use,need,rate,ret,sci,ml:sc.m}}
+const set=(k,v)=>{st[k]=+v;st.res=null;render()};
+const tog=i=>{const a=st.pl,j=a.indexOf(i);j<0?a.push(i):a.splice(j,1);a.sort();st.res=null;render()};
+const card=(on,fn,h,s)=>`<button class="card${on?" on":""}" onclick="${fn}"><b>${h}</b><small>${s}</small></button>`;
+const own=i=>st.pn>1?`<span class="tag">Player ${i%st.pn+1} · ${ROLES[i]}</span>`:"";
+const sec=(i,t,why,body)=>`<section><h2>${t}${own(i)}</h2><p class="why">${why}</p>${body}</section>`;
+const meter=(l,v,mx,u,min)=>{const ok=min?v>=mx:v<=mx;return`<div class="m"><div class="l"><span>${l}</span><span>${Math.round(v*10)/10} / ${Math.round(mx*10)/10} ${u}</span></div><div class="bar${ok?"":" x"}"><i style="width:${Math.min(100,v/mx*100)}%"></i></div></div>`};
+function finish(ev,gf){const r=calc(ev.id),sb=st.mode==1,L=[];r.sci*=gf;
+const add=(ok,t)=>L.push([ok,t]);
+add(r.mass<=r.ml,`<b>Mass:</b> ${r.mass} kg of ${r.ml} kg allowed. Every kilogram needs rocket fuel to launch, so heavy designs cannot leave Earth.`);
+add(r.cost<=r.bud,`<b>Budget:</b> ${r.cost} of ${Math.round(r.bud)} units. Longer missions cost more because teams on the ground must be paid.`);
+add(r.gen>=r.use,`<b>Power:</b> ${Math.round(r.gen)} W made, ${r.use} W needed. ${r.sc.w} Instruments and radios shut down if power runs short.`);
+add(r.ret>=1,`<b>Communications:</b> your radio can send ${Math.round(r.rate*10)/10} data units but instruments make ${r.need}. ${r.ret>=1?"All data reached Earth.":"Only "+Math.round(r.ret*100)+"% of the data came home, and science you cannot send is wasted."}`);
+add(r.sci>=r.sc.g,`<b>Science:</b> ${Math.round(r.sci*10)/10} points returned, goal is ${r.sc.g}. Closer orbits see more detail, and more months mean more observations.`);
+const hard=!sb&&(r.mass>r.ml||r.cost>r.bud||r.gen<r.use);
+const pct=hard?0:Math.min(100,Math.round(r.sci/r.sc.g*100));
+const goals=[[r.cost<=.9*r.bud,"Mission Lead: finish 10% under budget"],[r.gen>=1.2*r.use,"Power Engineer: keep 20% spare power"],[r.ret>=1,"Comms Engineer: bring home 100% of the data"],[r.sci>=1.2*r.sc.g,"Science Lead: beat the goal by 20%"]];
+const code=`${st.sc}${st.pw}${st.cm}${st.ob}-${st.pl.join("")}-${st.mo}`;
+st.res={ev,L,pct,hard,goals,code};
+st.hist.push({code,n:r.sc.n,pct,cost:r.cost,mass:r.mass});if(!sb&&pct>0)postScore({code,df:st.df,mode:st.mode,fund:st.fund,team:st.pn,pct});PF.n++;PF.best=Math.max(PF.best,pct);st.res.gain=award(sb?5:Math.round((hard?5:15+pct*.6+(st.pn>1?goals.filter(g=>g[0]).length*5:0))*[.8,1,1.5][st.df]),sb?0:Math.round(pct/4),'',['first',pct>=100&&!sb?'perfect':0,st.pn>1?'team':0]);render();setTimeout(()=>document.getElementById("res")?.scrollIntoView({behavior:"smooth"}),50)}
+function load(){const m=/^(\d)(\d)(\d)(\d)-(\d{1,4})-(\d+)$/.exec(document.getElementById("code").value.trim());
+if(m&&+m[1]<3&&+m[2]<3&&+m[3]<3&&+m[4]<3&&[...m[5]].every(c=>c<4)&&[6,12,24].includes(+m[6])){Object.assign(st,{sc:+m[1],pw:+m[2],cm:+m[3],ob:+m[4],pl:[...new Set([...m[5]].map(Number))].sort(),mo:+m[6],res:null,msg:"Design loaded."})}else st.msg="That design code is not valid.";render()}
+function render(){const c=calc(null),sb=st.mode==1,sc=c.sc,R=st.res;
+let h=`<p class="sub">Build a spacecraft, balance power, mass, budget, communications and time, then launch and learn why it worked or failed.</p>
+<section><div class="row"><label>Mode <select onchange="set('mode',this.value)"><option value="0"${!st.mode?" selected":""}>Mission (with limits)</option><option value="1"${sb?" selected":""}>Sandbox (no limits)</option></select></label>
+<label>Difficulty <select onchange="set('df',this.value)">${["Easy (bigger budget)","Normal","Hard (smaller budget)"].map((t,i)=>`<option value="${i}"${st.df==i?" selected":""}>${t}</option>`).join("")}</select></label>
+<label>Team size <select onchange="set('pn',this.value)">${[1,2,3,4].map(i=>`<option${st.pn==i?" selected":""}>${i}</option>`).join("")}</select></label></div>
+${st.pn>1?`<p class="why">Team mode: each player owns a subsystem. Discuss and negotiate: the budget, mass and power are shared, so one player’s upgrade is another’s problem. After launch, see how many of your four role goals the team met.</p>`:""}</section>
+<section><h2>1. Choose your mission</h2><div class="grid">${D.scn.map((s,i)=>card(st.sc==i,`set('sc',${i})`,s.n,s.d+` Goal: ${s.g} science points.`)).join("")}</div></section>`;
+h+=sec(0,"2. Orbit and duration","Lower orbits see more detail but need fuel (mass). Longer missions collect more science but cost more to operate.",
+`<div class="grid">${D.ob.map((o,i)=>card(st.ob==i,`set('ob',${i})`,o.n,`Science ×${o.x} · ${o.m} kg · ${o.c} cost`)).join("")}</div><p class="row" style="margin-top:8px">${[6,12,24].map(m=>`<button class="sm" style="${st.mo==m?"border-color:var(--ac);font-weight:700":""}" onclick="set('mo',${m})">${m} months</button>`).join("")}</p>`);
+h+=sec(1,"3. Power system","A spacecraft needs electricity for everything. Solar panels weaken far from the Sun; an RTG makes steady power anywhere but is expensive.",
+`<div class="grid">${D.pw.map((p,i)=>card(st.pw==i,`set('pw',${i})`,p.n,`${p.w} W${p.k?" (any distance)":" at Earth"} · ${p.m} kg · ${p.c} cost`)).join("")}</div>`);
+h+=sec(2,"4. Communications","Data rate is how fast you can send science home. The farther away you are, the weaker the signal, so you need a bigger antenna.",
+`<div class="grid">${D.cm.map((p,i)=>card(st.cm==i,`set('cm',${i})`,p.n,`Rate ${p.r} · ${p.p} W · ${p.m} kg · ${p.c} cost`)).join("")}</div>`);
+h+=sec(3,"5. Science instruments (pick any)","Instruments create science points, but also use power, make data you must transmit, and add mass.",
+`<div class="grid">${D.pl.map((p,i)=>card(st.pl.includes(i),`tog(${i})`,(st.pl.includes(i)?"✓ ":"")+p.n,`Science ${p.s} · Data ${p.d} · ${p.p} W · ${p.m} kg · ${p.c} cost`)).join("")}</div>`);
+h+=`<section><h2>Live mission dashboard</h2><p class="why">${sc.w}</p>${meter("Budget",c.cost,c.bud,"units")}${meter("Mass",c.mass,c.ml,"kg")}${meter("Power use vs supply",c.use,Math.max(1,c.gen),"W")}${meter("Data returned",c.ret*100,100,"%",1)}${meter("Science",c.sci,sc.g,"pts",1)}
+${st.df==0?`<p class="why">Hint: red bars mean a limit is broken. Fix power first, then communications, then add science.</p>`:""}</section>
+<button class="go" onclick="go()">Launch mission 🚀</button>`;
+if(R){h+=`<section id="res" class="res"><h2>Mission report: ${sc.n}</h2><p class="big ${R.hard?"b":R.pct>=100?"g":""}">${R.hard?"Mission failed on the launch pad":R.pct>=100?"Mission success":R.pct>=60?"Partial success":"Mission fell short"} · ${R.pct}%</p>
+<p><b>Event: ${R.ev.n}.</b> ${R.ev.t}</p><h2>Post-mission analysis</h2><ul>${R.L.map(([ok,t])=>`<li class="${ok?"g":"b"}">${ok?"✔":"✖"} <span style="color:var(--tx)">${t}</span></li>`).join("")}</ul>
+${R.hard?`<p>In Mission mode, a design that breaks mass, budget or power limits cannot succeed. Try the Sandbox to experiment freely.</p>`:""}
+${st.pn>1?`<h2>Team role goals: ${R.goals.filter(g=>g[0]).length}/4 met</h2><ul>${R.goals.map(([ok,t])=>`<li class="${ok?"g":"b"}">${ok?"✔":"✖"} ${t}</li>`).join("")}</ul>`:""}
+${R.gain?`<p class='big g'>${R.gain}</p>`:''}<p class="why">Design code (share it or compare later): <b>${R.code}</b></p></section>`}
+h+=`<section><h2>Save, share and compare designs</h2><div class="row"><input id="code" placeholder="e.g. 1121-013-12" size="14"><button class="sm" onclick="load()">Load design code</button><span class="sub">${st.msg}</span></div>`;
+if(st.hist.length)h+=`<div class="tw"><table><tr><th>#</th><th>Mission</th><th>Code</th><th>Score</th><th>Cost</th><th>Mass</th></tr>${st.hist.map((x,i)=>`<tr><td>${i+1}</td><td>${x.n}</td><td>${x.code}</td><td>${x.pct}%</td><td>${x.cost}</td><td>${x.mass}</td></tr>`).join("")}</table></div>`;
+h+=`</section><p class="sub" style="font-size:.8rem">Simplified model for learning, not real flight engineering. Built for the NASA Space Apps Challenge.</p>`;
+st.msg="";document.getElementById("app").innerHTML=head()+(st.tab==0?h:tab2());st.toast=''}
+let G=null;const kd=e=>{if(G)G.keys[e.key]=1},ku=e=>{if(G)G.keys[e.key]=0};
+function go(){const c=calc(null),hull=c.mass<=c.ml*.9?4:3;
+G={c,P:D.pw[st.pw],hull,max:hull,pw:100,t:0,dur:25+st.mo/6*3,x:160,o:[],sp:0,col:0,spn:0,fl:0,mt:0,keys:{},raf:0,last:performance.now()};
+document.getElementById("ov").innerHTML=`<div class="ovb"><div class="hud" id="hud"></div><canvas id="cv" width="320" height="480"></canvas><p class="why">Drag or use ← → to steer. Blue = science data, yellow = power cell, grey = debris, orange = solar flare.</p><button class="sm" onclick="endGame(1)">Abort mission</button></div>`;
+const cv=document.getElementById("cv"),mv=e=>{const r=cv.getBoundingClientRect();G.x=(e.clientX-r.left)/r.width*320};
+cv.onpointermove=mv;cv.onpointerdown=mv;addEventListener("keydown",kd);addEventListener("keyup",ku);G.raf=requestAnimationFrame(loop)}
+function loop(n){const g=G;if(!g)return;const dt=Math.min(.05,(n-g.last)/1000);g.last=n;g.t+=dt;g.fl-=dt;
+if(g.keys.ArrowLeft)g.x-=230*dt;if(g.keys.ArrowRight)g.x+=230*dt;g.x=Math.max(14,Math.min(306,g.x));
+g.sp-=dt;if(g.sp<=0){g.sp=.45;const r=Math.random(),k=r<.45?"d":r<.75?"a":r<.87?"p":"f";if(k=="d")g.spn++;g.o.push({x:18+Math.random()*284,y:-10,k,s:80+Math.random()*70+g.t*2})}
+g.pw-=4*dt*Math.min(2.5,Math.max(.3,g.c.use/Math.max(1,g.c.gen)));
+g.o=g.o.filter(o=>{o.y+=o.s*dt;if(Math.abs(o.x-g.x)<17&&o.y>425&&o.y<465){if(o.k=="d")g.col++;else if(o.k=="p")g.pw=Math.min(100,g.pw+20);else if(o.k=="a"){g.hull--;g.mt=1;g.fl=.4}else{if(!g.P.k)g.pw-=25;g.fv=1;g.fl=.4}return false}return o.y<490});
+draw();if(g.t>=g.dur||g.hull<=0||g.pw<=0)endGame(0);else g.raf=requestAnimationFrame(loop)}
+function draw(){const g=G,x=document.getElementById("cv").getContext("2d");x.fillStyle="#050814";x.fillRect(0,0,320,480);x.fillStyle="#fff";
+for(let i=0;i<30;i++)x.fillRect((i*97)%320,(i*53+g.t*60*(1+i%3))%480,1.5,1.5);
+for(const o of g.o){x.fillStyle={d:"#4dabf7",a:"#868e96",p:"#ffd43b",f:"#ff922b"}[o.k];x.beginPath();x.arc(o.x,o.y,o.k=="a"?11:8,0,7);x.fill()}
+x.fillStyle=g.fl>0?"#ff6b6b":"#e8ecfa";x.beginPath();x.moveTo(g.x,425);x.lineTo(g.x-12,460);x.lineTo(g.x+12,460);x.fill();
+document.getElementById("hud").innerHTML=`<span>❤ ${g.hull}/${g.max}</span><span>⚡ ${Math.max(0,Math.round(g.pw))}%</span><span>📡 ${g.col}</span><span>⏱ ${Math.max(0,Math.round(g.dur-g.t))}s</span>`}
+function endGame(abort){const g=G;G=null;cancelAnimationFrame(g.raf);removeEventListener("keydown",kd);removeEventListener("keyup",ku);document.getElementById("ov").innerHTML="";if(abort)return;
+let f=g.spn?g.col/g.spn:0;const dead=g.hull<=0,out=g.pw<=0;if(dead||out)f*=.4;
+const ev=D.ev[g.fv&&!g.P.k?1:g.mt?2:0],note=` Flight result: ${g.col} of ${g.spn} data packets collected, hull ${Math.max(0,g.hull)}/${g.max}, power ${Math.max(0,Math.round(g.pw))}%.${dead?" The spacecraft was destroyed by debris.":""}${out?" Power ran out and systems shut down.":""}`;
+finish({...ev,t:ev.t+note},.4+.6*f)}
+let PF={xp:0,cr:0,b:{},best:0,n:0};try{PF=Object.assign(PF,JSON.parse(localStorage.getItem('smdg')||'{}'))}catch(e){}
+const save=()=>{try{localStorage.setItem('smdg',JSON.stringify(PF))}catch(e){}},lvl=x=>Math.floor(Math.sqrt(x/40))+1,TT=['Cadet','Pilot','Engineer','Flight Director','Commander','Legend'],ttl=l=>TT[Math.min(5,l-1)];
+const BG={first:['🚀','First Launch','Launch any mission'],perfect:['🏆','Perfect Mission','Score 100% in Mission mode'],team:['👥','Team Player','Launch in team mode'],quiz:['🧠','Quiz Whiz','Get 3/3 in the quiz'],dock:['🛰️','Docking Pro','Dock 5/5 times'],sig:['🎹','Signal Master','Repeat 5 signals'],rock:['☄️','Asteroid Ace','Destroy 25 asteroids']};
+function award(xp,cr,w,bs){const l0=lvl(PF.xp);PF.xp+=xp;PF.cr+=cr;let t=`+${xp} XP · +${cr} ⭐`;(bs||[]).filter(Boolean).forEach(b=>{if(!PF.b[b]){PF.b[b]=1;t+=` · Badge: ${BG[b][0]} ${BG[b][1]}`}});if(lvl(PF.xp)>l0)t+=` · LEVEL UP! You are now a ${ttl(lvl(PF.xp))}`;save();return t}
+function head(){const l=lvl(PF.xp),a=40*(l-1)**2,b=40*l*l;return `<h1><span>🚀</span> <span class='gt'>Space Mission Design Game</span></h1><div class='hudb'><div class='lv'>Lv ${l}<small>${ttl(l)}</small></div><div class='xp'><div class='bar'><i style='width:${(PF.xp-a)/(b-a)*100}%'></i></div><small>${PF.xp} / ${b} XP</small></div><div class='cr'>⭐ ${PF.cr}</div></div><nav class='tabs'>${['🛠 Design','🎮 Arcade','🏅 Profile'].map((t,i)=>`<button class='${st.tab==i?'on':''}' onclick=tabTo(${i})>${t}</button>`).join('')}</nav>${st.toast?`<div class='toast'>${st.toast}</div>`:''}${st.tab==0?`<p class='why'>Extra funding: +${st.fund}. <button class='sm' onclick=buy()>💰 Buy +50 budget (40 ⭐)</button></p>`:''}`}
+function tabTo(i){st.tab=i;if(i==2)loadLB();render()}
+function buy(){if(PF.cr>=40){PF.cr-=40;st.fund+=50;save()}else st.toast='Not enough ⭐. Play the Arcade to earn more!';st.res=null;render()}
+function tab2(){if(st.tab==1)return `<section><h2>Arcade</h2><p class='why'>Quick mini games earn XP and ⭐ credits. Spend credits on extra mission budget in the Design tab.</p><div class='grid'>`+[['🧠 Mission Quiz','Answer 3 space science questions.'],['🛰️ Docking Timing','Stop the marker in the green zone, 5 tries.'],['🎹 Signal Sequence','Repeat the radio signal pattern.'],['☄️ Asteroid Defender','Fly your rocket and blast asteroids for 30s.']].map((g,i)=>card(0,`mini(${i})`,g[0],g[1])).join('')+`</div></section>`;
+const l=lvl(PF.xp);return `<section><h2>${ttl(l)} · Level ${l}</h2><p>${PF.xp} XP · ⭐ ${PF.cr}</p><p class='why'>Missions flown: ${PF.n} · Best score: ${PF.best}%</p></section><section><h2>Badges</h2><div class='grid'>${Object.entries(BG).map(([k,v])=>`<div class='card ${PF.b[k]?'on':''}' style='${PF.b[k]?'':'opacity:.5'}'><b>${PF.b[k]?v[0]:'🔒'} ${v[1]}</b><small>${v[2]}</small></div>`).join('')}</div></section>${lbHtml()}<section><h2>How to earn XP</h2><p class='why'>Launch missions (better score means more XP, and Hard mode pays 1.5×), meet your team role goals, and play the Arcade. Level up from Cadet to Legend.</p></section>`}
+const OV=()=>document.getElementById('ov');
+function back(){OV().innerHTML='';render()}
+function fin(t,xp,cr,b){OV().innerHTML=`<div class='ovb'><h2>${t}</h2><p class='big' style='color:#4cc26b'>${award(xp,cr,'',[b])}</p><button class='go' onclick=back()>Back to base</button></div>`}
+const QZ=[['Why do Mars probes need bigger solar panels than Moon probes?',['Mars is farther from the Sun','Mars has no gravity','Panels are cheaper there'],0,'Sunlight gets weaker the farther you are from the Sun.'],['What does an RTG use to make electricity?',['Wind','Heat from radioactive decay','Rocket fuel'],1,'It turns heat from decaying plutonium into power, even in the dark.'],['Why does a bigger antenna help far from Earth?',['It focuses the signal tighter','It makes the craft lighter','It adds gravity'],0,'A dish focuses the beam so more signal reaches Earth.'],['What happens to launch cost as mass grows?',['It goes up','It stays the same','It disappears'],0,'Every extra kilogram needs more fuel to lift.'],['Why is low orbit good for science?',['You see more detail up close','It is always cheaper','There is no radiation'],0,'Closer means sharper data, but staying low needs fuel.'],['Which moon may hide a liquid ocean under its ice?',['Europa','Deimos','Phobos'],0,'Europa’s ice shell likely covers salty liquid water.']];
+function mini(k){
+if(k==3)return rocket();
+if(k==0){const qs=[...QZ].sort(()=>Math.random()-.5).slice(0,3);let i=0,sc=0;const show=()=>{const q=qs[i];OV().innerHTML=`<div class='ovb'><h2>Question ${i+1}/3</h2><p>${q[0]}</p>${q[1].map((o,j)=>`<button class='card' style='width:100%;margin:4px 0' data-j='${j}'>${o}</button>`).join('')}<p id='ex' class='why'></p></div>`;const bs=[...OV().querySelectorAll('button')];bs.forEach(b=>b.onclick=()=>{const ok=+b.dataset.j==q[2];if(ok)sc++;b.style.borderColor=ok?'#4cc26b':'#ff6b7a';bs.forEach(x=>x.onclick=null);document.getElementById('ex').textContent=(ok?'✔ Correct! ':'✖ Not quite. ')+q[3];setTimeout(()=>++i<3?show():fin(`Quiz: ${sc}/3`,sc*15,sc*10,sc==3?'quiz':0),1800)})};show()}
+if(k==1){let n=0,sc=0,x=0,d=1,ct=Math.random()*70;OV().innerHTML=`<div class='ovb'><h2>Docking Timing</h2><p class='why' id='dt'>Round 1/5: press DOCK when the white marker is in the green zone.</p><div class='track'><div id='zn' class='zone'></div><div id='mk' class='mark'></div></div><button class='go' id='db'>DOCK!</button></div>`;const zn=document.getElementById('zn'),mk=document.getElementById('mk'),dt=document.getElementById('dt'),sz=()=>{zn.style.left=ct+'%';zn.style.width='25%'};sz();
+const iv=setInterval(()=>{x+=d*(1.2+n*.5);if(x>=96){x=96;d=-1}if(x<=0){x=0;d=1}mk.style.left=x+'%'},16);
+document.getElementById('db').onclick=()=>{const ok=x>=ct-2&&x<=ct+25;if(ok)sc++;n++;dt.textContent=(ok?'✔ Docked! ':'✖ Missed. ')+(n<5?`Round ${n+1}/5`:'');if(n>=5){clearInterval(iv);setTimeout(()=>fin(`Docked ${sc}/5`,sc*8,sc*8,sc==5?'dock':0),700)}else{ct=Math.random()*70;sz()}}}
+if(k==2){const cols=['#ff6b6b','#4dabf7','#51cf66','#ffd43b'];let seq=[],pos=0,busy=1;OV().innerHTML=`<div class='ovb'><h2>Signal Sequence</h2><p class='why' id='sg'>Watch the signal…</p><div class='pad'>${cols.map(c=>`<button style='background:${c}'></button>`).join('')}</div></div>`;
+const bs=[...OV().querySelectorAll('.pad button')],fl=i=>{bs[i].style.opacity=.3;setTimeout(()=>bs[i].style.opacity=1,300)},sg=document.getElementById('sg');
+const next=()=>{seq.push(Math.floor(Math.random()*4));pos=0;busy=1;sg.textContent=`Round ${seq.length}: watch…`;seq.forEach((s,j)=>setTimeout(()=>fl(s),600+j*600));setTimeout(()=>{busy=0;sg.textContent='Your turn!'},600+seq.length*600)};
+bs.forEach((b,i)=>b.onclick=()=>{if(busy)return;fl(i);if(i!=seq[pos]){const L=seq.length-1;busy=1;return setTimeout(()=>fin(`Signal length ${L}`,L*6,L*5,L>=5?'sig':0),500)}if(++pos==seq.length)setTimeout(next,700)});next()}}
+function rocket(){let x=160,t=30,hp=3,fire=0,rk=[],as=[],ex=[],sp=0,n=0,last=performance.now(),keys={},raf;
+OV().innerHTML=`<div class='ovb'><div class='hud' id='hud'></div><canvas id='cv' width='320' height='480'></canvas><p class='why'>Drag or use ← → to fly. Your rocket fires automatically. Big asteroids split into smaller ones!</p></div>`;
+const cv=document.getElementById('cv'),ctx=cv.getContext('2d'),hud=document.getElementById('hud'),kd=e=>keys[e.key]=1,ku=e=>keys[e.key]=0,mv=e=>{const r=cv.getBoundingClientRect();x=(e.clientX-r.left)/r.width*320};
+addEventListener('keydown',kd);addEventListener('keyup',ku);cv.onpointermove=mv;cv.onpointerdown=mv;
+const end=()=>{cancelAnimationFrame(raf);removeEventListener('keydown',kd);removeEventListener('keyup',ku);fin(`Destroyed ${n} asteroids`,Math.min(60,n*2),Math.min(30,n),n>=25?'rock':0)};
+const loop=now=>{const dt=Math.min(.05,(now-last)/1000);last=now;t-=dt;
+if(keys.ArrowLeft)x-=230*dt;if(keys.ArrowRight)x+=230*dt;x=Math.max(14,Math.min(306,x));
+fire-=dt;if(fire<=0){fire=.22;rk.push({x,y:420})}
+sp-=dt;if(sp<=0){sp=.8-(30-t)*.01;as.push({x:20+Math.random()*280,y:-30,s:3,hp:3,vx:(Math.random()-.5)*60,vy:55+Math.random()*40+(30-t)*2})}
+rk.forEach(b=>b.y-=420*dt);rk=rk.filter(b=>b.y>-10);const nw=[];
+as.forEach(a=>{a.x+=a.vx*dt;a.y+=a.vy*dt;if(a.x<10||a.x>310)a.vx*=-1;a.r=8+a.s*5;
+rk=rk.filter(b=>{if(a.hp>0&&Math.abs(b.x-a.x)<a.r&&Math.abs(b.y-a.y)<a.r){a.hp--;ex.push({x:b.x,y:b.y,l:.25});return false}return true});
+if(a.hp<=0){n++;if(a.s>1)for(const d of[-1,1])nw.push({x:a.x,y:a.y,s:a.s-1,hp:a.s-1,vx:d*45,vy:a.vy+10})}
+else if(a.y>410&&Math.abs(a.x-x)<a.r+12){hp--;a.hp=0;ex.push({x:a.x,y:a.y,l:.4})}});
+as=as.filter(a=>a.hp>0&&a.y<500).concat(nw);ex.forEach(e=>e.l-=dt);ex=ex.filter(e=>e.l>0);
+ctx.fillStyle='#050814';ctx.fillRect(0,0,320,480);ctx.fillStyle='#fff';for(let i=0;i<30;i++)ctx.fillRect((i*97)%320,(i*53+(30-t)*70*(1+i%3))%480,1.5,1.5);
+ctx.fillStyle='#ffd43b';rk.forEach(b=>ctx.fillRect(b.x-1.5,b.y,3,10));
+as.forEach(a=>{ctx.fillStyle=['#868e96','#9a8f84','#7b7f86'][a.s-1];ctx.beginPath();ctx.arc(a.x,a.y,a.r,0,7);ctx.fill();ctx.fillStyle='rgba(0,0,0,.3)';ctx.beginPath();ctx.arc(a.x-a.r*.3,a.y-a.r*.2,a.r*.25,0,7);ctx.fill()});
+ex.forEach(e=>{ctx.fillStyle='#ff922b';ctx.beginPath();ctx.arc(e.x,e.y,Math.max(1,(.4-e.l)*60),0,7);ctx.fill()});
+ctx.fillStyle='#e8ecfa';ctx.fillRect(x-6,425,12,30);ctx.fillStyle='#ff6b6b';ctx.beginPath();ctx.moveTo(x-6,425);ctx.lineTo(x,408);ctx.lineTo(x+6,425);ctx.fill();
+ctx.beginPath();ctx.moveTo(x-6,445);ctx.lineTo(x-14,460);ctx.lineTo(x-6,455);ctx.fill();ctx.beginPath();ctx.moveTo(x+6,445);ctx.lineTo(x+14,460);ctx.lineTo(x+6,455);ctx.fill();
+ctx.fillStyle='#ffa94d';ctx.beginPath();ctx.moveTo(x-4,455);ctx.lineTo(x,465+Math.random()*10);ctx.lineTo(x+4,455);ctx.fill();
+hud.innerHTML=`<span>❤ ${hp}</span><span>☄️ ${n}</span><span>⏱ ${Math.max(0,Math.ceil(t))}s</span>`;
+if(t<=0||hp<=0)end();else raf=requestAnimationFrame(loop)};
+raf=requestAnimationFrame(loop)}
+let W3=null,K3="";
+function init3(){if(W3!==null||!window.THREE)return;try{const cv=document.getElementById("c3"),R=new THREE.WebGLRenderer({canvas:cv,antialias:true,alpha:true}),S=new THREE.Scene(),C=new THREE.PerspectiveCamera(40,2,.1,100);
+C.position.set(0,1.2,9.5);C.lookAt(0,0,0);S.add(new THREE.AmbientLight(0xffffff,.6));const dl=new THREE.DirectionalLight(0xffffff,1.1);dl.position.set(5,6,7);S.add(dl);
+const sg=new THREE.BufferGeometry(),pa=[];for(let i=0;i<300;i++)pa.push((Math.random()-.5)*60,(Math.random()-.5)*40,-10-Math.random()*20);sg.setAttribute("position",new THREE.Float32BufferAttribute(pa,3));S.add(new THREE.Points(sg,new THREE.PointsMaterial({color:0xffffff,size:.08})));
+const pl=new THREE.Mesh(new THREE.SphereGeometry(3.4,32,24),new THREE.MeshStandardMaterial({roughness:1}));pl.position.set(-5.5,-4.2,-9);S.add(pl);
+const ship=new THREE.Group();S.add(ship);let ry=.6,drag=0,lx=0;
+cv.onpointerdown=e=>{drag=1;lx=e.clientX};addEventListener("pointerup",()=>drag=0);cv.onpointermove=e=>{if(drag){ry+=(e.clientX-lx)*.01;lx=e.clientX}};
+W3={ship,pl};
+(function tick(){const w=cv.clientWidth,h=cv.clientHeight;if(w&&h&&(cv.width!=w||cv.height!=h)){R.setSize(w,h,false);C.aspect=w/h;C.updateProjectionMatrix()}
+if(!drag)ry+=.006;ship.rotation.y=ry;ship.rotation.x=.15;pl.rotation.y+=.002;
+ship.children.forEach(p=>{const s=p.scale.x;p.scale.setScalar(s+(1-s)*.1)});R.render(S,C);requestAnimationFrame(tick)})()}
+catch(e){W3=0;document.getElementById("vw").style.display="none"}}
+const MT=(c,m=.4,r=.5,e=0)=>new THREE.MeshStandardMaterial({color:c,metalness:m,roughness:r,side:THREE.DoubleSide,emissive:e});
+const bx=(w,h,d,c)=>new THREE.Mesh(new THREE.BoxGeometry(w,h,d),MT(c)),cy=(r,h,c,z)=>{const m=new THREE.Mesh(new THREE.CylinderGeometry(r,r,h,16),MT(c));if(z)m.rotation.x=Math.PI/2;return m},sp=(r,c)=>new THREE.Mesh(new THREE.SphereGeometry(r,16,12),MT(c)),at=(o,x,y,z)=>{o.position.set(x,y,z);return o};
+function P(x,y,z,...k){const g=new THREE.Group();k.forEach(o=>g.add(o));g.position.set(x,y,z);g.scale.setScalar(.01);W3.ship.add(g);return g}
+function build(){const s=W3.ship;while(s.children.length)s.remove(s.children[0]);
+P(0,0,0,bx(1.4,1.8,1.4,0xd9b34a));
+const o=st.ob,er=[.5,.38,.25][o],tr=[.45,.3,.2][o],en=new THREE.Mesh(new THREE.ConeGeometry(er,1,20,1,true),MT(0x888f9c));en.rotation.x=Math.PI;P(0,-1.4,0,en);
+P(.7+tr,-.4,0,sp(tr,0xcfd4dc));if(o<2)P(-.7-tr,-.4,0,sp(tr,0xcfd4dc));
+const p=st.pw;
+if(p<2){const n=p?3:1,w=p?1:1.2,d=p?1.2:.6;for(const sd of[-1,1])for(let i=0;i<n;i++)P(sd*(.7+w/2+.05+i*(w+.05)),.2,0,bx(w,.04,d,0x1c4fd8));P(0,.2,0,bx(2*(.7+n*(w+.05)),.05,.05,0xaaaaaa))}
+else{const f=[cy(.25,1.4,0x3a3d45),at(cy(.27,.25,0xff8a00),0,0,0)];f[1].material=MT(0xff8a00,.2,.5,0x883300);for(let i=0;i<3;i++){const b=bx(1.2,.02,.5,0x6b7280);b.rotation.y=i*Math.PI/3;f.push(b)}P(1.2,0,0,bx(1,.05,.05,0x999999));P(1.8,0,0,...f)}
+const c=st.cm;
+if(c==0)P(0,1.4,0,cy(.02,1,0xcccccc),at(sp(.07,0xffffff),0,.5,0));
+else{const r=c==1?.5:.95,bw=new THREE.Mesh(new THREE.SphereGeometry(r,24,12,0,Math.PI*2,0,Math.PI/2),MT(0xf2f2f2,.2,.4));bw.rotation.x=Math.PI;bw.scale.y=.45;P(0,1+r*.45,0,bw,at(cy(.02,r*.7,0xcccccc),0,r*.3,0),at(bx(.12,.12,.12,0xff5a5a),0,r*.62,0)).rotation.z=.35}
+st.pl.forEach(i=>{
+if(i==0)P(0,-.3,.9,cy(.2,.6,0x222222,1),at(cy(.15,.05,0x66ccff,1),0,0,.32));
+if(i==1)P(-1,-.6,.2,bx(.45,.45,.8,0x9aa3b2),at(cy(.1,.5,0x333333,1),0,0,.6));
+if(i==2){const a=[bx(.05,.05,3.2,0xdddddd)];for(let k=0;k<4;k++)a.push(at(bx(1.1-k*.15,.04,.04,0xdddddd),0,0,-1.3+k*.8));P(0,0,-2.3,...a)}
+if(i==3)P(.45,.6,1.7,bx(.04,.04,2,0xcccccc),at(sp(.1,0xff9f1c),0,0,1.05))})}
+function sync(){init3();if(!W3)return;document.getElementById('vw').style.display=st.tab==0?'':'none';const k=`${st.sc}${st.pw}${st.cm}${st.ob}${st.pl}`;if(k!=K3){K3=k;build()}
+W3.pl.material.color.set(["#b0b4bc","#c1440e","#9ec9e8"][st.sc]);
+document.getElementById("vl").textContent=`${D.pw[st.pw].n} · ${D.cm[st.cm].n} · ${D.ob[st.ob].n} · ${st.pl.length?st.pl.map(i=>D.pl[i].n).join(", "):"no instruments"} — drag to rotate`}
+
+let LB=null;
+const esc=t=>String(t).replace(/[&<>"']/g,c=>'&#'+c.charCodeAt(0)+';');
+async function api(p,o){try{const r=await fetch('/api'+p,{headers:{'Content-Type':'application/json'},...o});return r.ok?await r.json():null}catch(e){return null}}
+async function loadLB(){LB=await api('/leaderboard?limit=10');render()}
+async function postScore(d){let n=localStorage.getItem('smdg_name');if(!n){n=(prompt('Pilot name for the global leaderboard? (letters, numbers, spaces)')||'').trim().replace(/[^A-Za-z0-9 _-]/g,'').slice(0,20);if(!n)return;localStorage.setItem('smdg_name',n)}d.player=n;const r=await api('/scores',{method:'POST',body:JSON.stringify(d)});if(r){st.toast=`Leaderboard rank #${r.rank} \u00b7 server XP ${r.xp_total}`;render()}}
+const lbHtml=()=>`<section><h2>\ud83c\udf0d Global leaderboard</h2>${LB?`<div class='tw'><table><tr><th>#</th><th>Pilot</th><th>Mission</th><th>Score</th></tr>${LB.map((x,i)=>`<tr><td>${i+1}</td><td>${esc(x.name)}</td><td>${esc(x.scenario)}</td><td>${x.pct}%</td></tr>`).join('')}</table></div>`:`<p class='why'>Backend not connected. Run the Python and Java servers (see README) to see global scores.</p>`}</section>`;
+const _r=render;render=function(){_r();sync()};
+render();
+</script></body></html>
